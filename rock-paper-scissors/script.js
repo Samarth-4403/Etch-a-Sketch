@@ -5,8 +5,8 @@ function getComputerChoice() {
 }
 
 function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
-    computerSelection = computerSelection.toLowerCase();
+    const computerSelection = getComputerChoice();
+    let result;
 
     if (playerSelection === computerSelection) {
       return "It's a tie! " + playerSelection + " cancels out " + computerSelection;
@@ -15,10 +15,16 @@ function playRound(playerSelection, computerSelection) {
       (playerSelection ===  'rock' && computerSelection ==='scissors') ||
       (playerSelection === 'paper' && computerSelection === 'rock')
    )  {
-      return "You win! " + playerSelection + " beats " + computerSelection ;
+      result = "You win! " + playerSelection + " beats " + computerSelection ;
+      playerScore++;
    }  else {
-      return "You lose! " + computerSelection + " beats " + playerSelection ;
-   }  
+      result = "You lose! " + computerSelection + " beats " + playerSelection ;
+      computerScore++;
+   }
+   
+   displayResult(result);
+   displayScore();
+   checkWinner();
 }
 
 function displayResult(result) {
@@ -26,35 +32,27 @@ function displayResult(result) {
   resultDiv.textContent = result;
 }
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
+function displayScore() {
+  const playerScoreDiv = document.getElementById('player-score');
+  const computerScoreDiv = document.getElementById('computer-score');
+  playerScoreDiv.textContent = "Player Score: " + playerScore;
+  computerScoreDiv.textContent = "Computer Score: " + computerScore;
+}
 
-    for (let round = 1; round <= 5; round++) {
-      const playerSelection = prompt("Round " + round + ": Enter your choice (Rock/Paper/Scissors)").trim();
-      const computerSelection = getComputerChoice();
-      const result = playRound(playerSelection, computerSelection);
+function checkWinner() {
+  const winnerDiv = document.getElementById('winner');
+  if (playerScore === 5) {
+    winnerDiv.textContent = "Congratulations Player!!! You won the game.";
+    resetScore();
+  } else if (computerScore === 5) {
+    winnerDiv.textContent = "You lost the game. Better luck next time";
+    resetScore();
+  }
+}
 
-      displayResult(result);
-
-      console.log(result);
-
-      if (result.includes("win")){
-        playerScore++;
-      } else if (result.includes("lose")) {
-        computerScore++;
-      }
-    }
-
-    console.log("Final Score: You " + playerScore + " Computer: " + computerScore);
-
-    if (playerScore > computerScore) {
-      console.log("Congratulations! You win the game!");
-    } else if (computerScore > playerScore) {
-      console.log("Sorry you lost this time. Better luck next time");
-    } else {
-      console.log("The game ends in a draw.");
-    }
+function resetScore() {
+  playerScore = 0;
+  computerScore = 0;
 }
 
 game();
