@@ -1,30 +1,33 @@
+let playerScore = 0;
+let computerScore = 0;
+
 function getComputerChoice() {
-    const choices = ['Rock', 'Paper', 'Scissors'];
-    const randomIndex = Math.floor(Math.random() * choices.length);
-    return choices[randomIndex];
+  const choices = ['Rock', 'Paper', 'Scissors'];
+  const randomIndex = Math.floor(Math.random() * choices.length);
+  return choices[randomIndex];
 }
 
-function playRound(playerSelection, computerSelection) {
-    const computerSelection = getComputerChoice();
-    let result;
+function play(playerSelection) {
+  const computerSelection = getComputerChoice();
+  let result;
 
-    if (playerSelection === computerSelection) {
-      return "It's a tie! " + playerSelection + " cancels out " + computerSelection;
-    } else if (
-      (playerSelection === 'scissors' && computerSelection === 'paper') ||
-      (playerSelection ===  'rock' && computerSelection ==='scissors') ||
-      (playerSelection === 'paper' && computerSelection === 'rock')
-   )  {
-      result = "You win! " + playerSelection + " beats " + computerSelection ;
-      playerScore++;
-   }  else {
-      result = "You lose! " + computerSelection + " beats " + playerSelection ;
-      computerScore++;
-   }
-   
-   displayResult(result);
-   displayScore();
-   checkWinner();
+  if (playerSelection === computerSelection) {
+    result = "It's a tie! " + playerSelection + " cancels out " + computerSelection;
+  } else if (
+    (playerSelection === 'Rock' && computerSelection === 'Scissors') ||
+    (playerSelection === 'Paper' && computerSelection === 'Rock') ||
+    (playerSelection === 'Scissors' && computerSelection === 'Paper')
+  ) {
+    result = "You win! " + playerSelection + " beats " + computerSelection;
+    playerScore++;
+  } else {
+    result = "You lose! " + computerSelection + " beats " + playerSelection;
+    computerScore++;
+  }
+
+  displayResult(result);
+  displayScore();
+  checkWinner();
 }
 
 function displayResult(result) {
@@ -41,11 +44,12 @@ function displayScore() {
 
 function checkWinner() {
   const winnerDiv = document.getElementById('winner');
-  if (playerScore === 5) {
-    winnerDiv.textContent = "Congratulations Player!!! You won the game.";
-    resetScore();
-  } else if (computerScore === 5) {
-    winnerDiv.textContent = "You lost the game. Better luck next time";
+  if (playerScore === 5 || computerScore === 5) {
+    if (playerScore === 5) {
+      winnerDiv.textContent = "Congratulations! You win the game!";
+    } else {
+      winnerDiv.textContent = "You lost the game. Better luck next time!";
+    }
     resetScore();
   }
 }
@@ -53,6 +57,5 @@ function checkWinner() {
 function resetScore() {
   playerScore = 0;
   computerScore = 0;
+  displayScore();
 }
-
-game();
